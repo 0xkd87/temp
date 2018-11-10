@@ -1,0 +1,156 @@
+[
+    {
+        "id": "6c503d92.b02814",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "952da12c.39717",
+        "type": "s7comm read",
+        "z": "6c503d92.b02814",
+        "connection": "8e0f267e.a32dc8",
+        "payload": "{\"S7_Type\":\"DB\",\"S7_DBnum\":\"902\",\"S7_Datatype\":\"I\",\"S7_Offset\":\"0\",\"S7_BitOffset\":\"0\",\"S7_Quantity\":\"1\",\"S7_Name\":\"cnt\"}",
+        "s7Name": "cnt",
+        "topic": "top",
+        "name": "",
+        "signalSetted": false,
+        "none": "true",
+        "repeat": "",
+        "once": true,
+        "x": 293.5,
+        "y": 255,
+        "wires": [
+            [
+                "62fb0a12.ab9f44",
+                "7077c24e.f3b044"
+            ]
+        ],
+        "outputLabels": [
+            "v1"
+        ]
+    },
+    {
+        "id": "e0cd3e59.47c5",
+        "type": "http response",
+        "z": "6c503d92.b02814",
+        "name": "",
+        "statusCode": "200",
+        "headers": {
+            "content-type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        },
+        "x": 1058.5,
+        "y": 101,
+        "wires": []
+    },
+    {
+        "id": "fa17b49d.f5168",
+        "type": "http in",
+        "z": "6c503d92.b02814",
+        "name": "",
+        "url": "/rx",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 65,
+        "y": 57,
+        "wires": [
+            [
+                "b24dc605.b9ba88",
+                "952da12c.39717"
+            ]
+        ]
+    },
+    {
+        "id": "b24dc605.b9ba88",
+        "type": "function",
+        "z": "6c503d92.b02814",
+        "name": "",
+        "func": "msg.payload = {\n  //  n: node.id,\n    val: flow.get(\"v1\")\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 547.5,
+        "y": 70,
+        "wires": [
+            [
+                "e0cd3e59.47c5",
+                "7909ed13.b0510c"
+            ]
+        ]
+    },
+    {
+        "id": "7077c24e.f3b044",
+        "type": "debug",
+        "z": "6c503d92.b02814",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 623.5,
+        "y": 215,
+        "wires": []
+    },
+    {
+        "id": "62fb0a12.ab9f44",
+        "type": "change",
+        "z": "6c503d92.b02814",
+        "name": "",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload.value",
+                "pt": "msg",
+                "to": "v1",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 521.5,
+        "y": 322,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7909ed13.b0510c",
+        "type": "debug",
+        "z": "6c503d92.b02814",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 1029.5,
+        "y": 252,
+        "wires": []
+    },
+    {
+        "id": "8e0f267e.a32dc8",
+        "type": "s7comm",
+        "z": "",
+        "ip": "192.168.2.10",
+        "port": "102",
+        "rack": "0",
+        "slot": "1",
+        "payload": [
+            {
+                "S7_Type": "DB",
+                "S7_DBnum": "902",
+                "S7_Datatype": "I",
+                "S7_Offset": "0",
+                "S7_BitOffset": "0",
+                "S7_Quantity": "1",
+                "S7_Name": "cnt"
+            }
+        ]
+    }
+]
