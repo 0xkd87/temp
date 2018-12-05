@@ -1,0 +1,381 @@
+[
+    {
+        "id": "f4ef9d8b.845fd8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "d3aa9edb.25d178",
+        "type": "s7comm read",
+        "z": "f4ef9d8b.845fd8",
+        "connection": "d5b50e5c.97df8",
+        "payload": "{\"S7_Type\":\"DB\",\"S7_DBnum\":\"902\",\"S7_Datatype\":\"I\",\"S7_Offset\":\"0\",\"S7_BitOffset\":\"0\",\"S7_Quantity\":\"16\",\"S7_Name\":\"cnt\"}",
+        "s7Name": "cnt",
+        "topic": "top",
+        "name": "",
+        "signalSetted": false,
+        "none": "true",
+        "repeat": "",
+        "once": true,
+        "x": 290,
+        "y": 160,
+        "wires": [
+            [
+                "cfd445bb.6d70f"
+            ]
+        ],
+        "outputLabels": [
+            "v1"
+        ]
+    },
+    {
+        "id": "ed94b9aa.d5b4c",
+        "type": "http response",
+        "z": "f4ef9d8b.845fd8",
+        "name": "",
+        "statusCode": "200",
+        "headers": {
+            "content-type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        },
+        "x": 940,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "a83cedd.265581",
+        "type": "http in",
+        "z": "f4ef9d8b.845fd8",
+        "name": "",
+        "url": "/rx",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 65,
+        "y": 57,
+        "wires": [
+            [
+                "3453406d.9b3f68",
+                "d3aa9edb.25d178",
+                "7b96d8da.2ea518"
+            ]
+        ]
+    },
+    {
+        "id": "3453406d.9b3f68",
+        "type": "function",
+        "z": "f4ef9d8b.845fd8",
+        "name": "",
+        "func": "msg.payload = {\n  //  n: node.id,\n    val: flow.get(\"v1\")\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 547.5,
+        "y": 70,
+        "wires": [
+            [
+                "ed94b9aa.d5b4c"
+            ]
+        ]
+    },
+    {
+        "id": "bae87a36.94b868",
+        "type": "debug",
+        "z": "f4ef9d8b.845fd8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 770,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "cfd445bb.6d70f",
+        "type": "change",
+        "z": "f4ef9d8b.845fd8",
+        "name": "",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload.value",
+                "pt": "msg",
+                "to": "v1",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 610,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d86c0f09.136b78",
+        "type": "debug",
+        "z": "f4ef9d8b.845fd8",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 710,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "a839792e.f1856",
+        "type": "http in",
+        "z": "f4ef9d8b.845fd8",
+        "name": "",
+        "url": "/plcWr",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 191,
+        "y": 452,
+        "wires": [
+            [
+                "c5503955.387818",
+                "6940feb6.39f388"
+            ]
+        ]
+    },
+    {
+        "id": "1721aab.05bd955",
+        "type": "s7comm write",
+        "z": "f4ef9d8b.845fd8",
+        "connection": "6f308757.835ac8",
+        "payload": "{\"S7_Type\":\"DB\",\"S7_DBnum\":\"901\",\"S7_Datatype\":\"X\",\"S7_Offset\":\"0\",\"S7_BitOffset\":\"1\",\"S7_Quantity\":\"1\",\"S7_Name\":\"x1\"}",
+        "s7Name": "x1",
+        "topic": "PLCWrite",
+        "name": "",
+        "signalSetted": false,
+        "x": 360,
+        "y": 600,
+        "wires": [
+            [
+                "8ce13ff0.e0e6e8"
+            ]
+        ]
+    },
+    {
+        "id": "c5503955.387818",
+        "type": "function",
+        "z": "f4ef9d8b.845fd8",
+        "name": "BuildValuePayload",
+        "func": "msg.payload = {\n    \"value\":[true]\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 170,
+        "y": 600,
+        "wires": [
+            [
+                "1721aab.05bd955"
+            ]
+        ]
+    },
+    {
+        "id": "8ce13ff0.e0e6e8",
+        "type": "switch",
+        "z": "f4ef9d8b.845fd8",
+        "name": "",
+        "property": "payload.error",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 530,
+        "y": 600,
+        "wires": [
+            [
+                "d86c0f09.136b78"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "e77844e2.ee358",
+        "type": "http response",
+        "z": "f4ef9d8b.845fd8",
+        "name": "",
+        "statusCode": "200",
+        "headers": {
+            "content-type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        },
+        "x": 800,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "6940feb6.39f388",
+        "type": "function",
+        "z": "f4ef9d8b.845fd8",
+        "name": "",
+        "func": "return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 550,
+        "y": 420,
+        "wires": [
+            [
+                "e77844e2.ee358"
+            ]
+        ]
+    },
+    {
+        "id": "3afa7258.a21ffe",
+        "type": "ui_gauge",
+        "z": "f4ef9d8b.845fd8",
+        "name": "",
+        "group": "3cc8e9bb.93344e",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "donut",
+        "title": "gauge",
+        "label": "units",
+        "format": "{{payload.value}}",
+        "min": 0,
+        "max": "300000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 1130,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "7b96d8da.2ea518",
+        "type": "s7comm read",
+        "z": "f4ef9d8b.845fd8",
+        "connection": "d5b50e5c.97df8",
+        "payload": "{\"S7_Type\":\"DB\",\"S7_DBnum\":\"902\",\"S7_Datatype\":\"W\",\"S7_Offset\":\"32\",\"S7_BitOffset\":\"0\",\"S7_Quantity\":\"28\",\"S7_Name\":\"Train_Status\"}",
+        "s7Name": "Train_Status",
+        "topic": "top",
+        "name": "",
+        "signalSetted": false,
+        "none": "true",
+        "repeat": "",
+        "once": true,
+        "x": 290,
+        "y": 240,
+        "wires": [
+            [
+                "dbed6a5.3aa3618"
+            ]
+        ],
+        "outputLabels": [
+            "v1"
+        ]
+    },
+    {
+        "id": "dbed6a5.3aa3618",
+        "type": "function",
+        "z": "f4ef9d8b.845fd8",
+        "name": "",
+        "func": "\nvar T = {\n    \n};\n\nmsg.payload = {\n    x :  T\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 530,
+        "y": 280,
+        "wires": [
+            [
+                "bae87a36.94b868"
+            ]
+        ]
+    },
+    {
+        "id": "d5b50e5c.97df8",
+        "type": "s7comm",
+        "z": "f4ef9d8b.845fd8",
+        "ip": "192.168.33.2",
+        "port": "102",
+        "rack": "0",
+        "slot": "1",
+        "payload": [
+            {
+                "S7_Type": "DB",
+                "S7_DBnum": "902",
+                "S7_Datatype": "I",
+                "S7_Offset": "0",
+                "S7_BitOffset": "0",
+                "S7_Quantity": "16",
+                "S7_Name": "cnt"
+            },
+            {
+                "S7_Type": "DB",
+                "S7_DBnum": "902",
+                "S7_Datatype": "W",
+                "S7_Offset": "32",
+                "S7_BitOffset": "0",
+                "S7_Quantity": "28",
+                "S7_Name": "Train_Status"
+            }
+        ]
+    },
+    {
+        "id": "6f308757.835ac8",
+        "type": "s7comm",
+        "z": "f4ef9d8b.845fd8",
+        "ip": "192.168.33.2",
+        "port": "102",
+        "rack": "0",
+        "slot": "1",
+        "payload": [
+            {
+                "S7_Type": "DB",
+                "S7_DBnum": "901",
+                "S7_Datatype": "X",
+                "S7_Offset": "0",
+                "S7_BitOffset": "1",
+                "S7_Quantity": "1",
+                "S7_Name": "x1"
+            }
+        ]
+    },
+    {
+        "id": "3cc8e9bb.93344e",
+        "type": "ui_group",
+        "z": "",
+        "name": "Group 1",
+        "tab": "a029b869.08f16",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "a029b869.08f16",
+        "type": "ui_tab",
+        "name": "Tab 1",
+        "icon": "dashboard",
+        "order": 1
+    }
+]
